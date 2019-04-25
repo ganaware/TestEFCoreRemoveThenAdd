@@ -9,29 +9,27 @@ public class Book {
     public long BookId { get; set; }
     public int Pages { get; set; }
     public Info EnglishInfo { get; set; }
-    public static void OnModelCreatingelBuilder modelBuilder) {
+    public static void OnModelCreating(ModelBuilder modelBuilder) {
         var e_tb = modelBuilder.Entity<Book>();
         e_tb.Property(e => e.BookId);
         e_tb.Property(e => e.Pages);
         e_tb.HasKey(e => e.BookId);
-        e_tb.OwnsOne(e => e.EnglishInfo);
+        e_tb.OwnsOne(e => e.EnglishInfo, rob => Info.OnModelCreating(rob));
     }
 }
 
 public class Info {
     public string Title { get; set; }
-    public static void OnModelCreatingelBuilder modelBuilder) {
-        EntityTypeBuilder<Info> e_tb = lBuilder.Entity<Info>();
-        e_tb.Property(e => e.Title);
+    public static void OnModelCreating<T>(ReferenceOwnershipBuilder<T, Info> rob) where T : class {
+        rob.Property(e => e.Title);
     }
 }
 
 public class MyContext : DbContext {
     public DbSet<Book> Books { get; set; }
-    protected override void OnModelCreatingelBuilder modelBuilder) {
+    protected override void OnModelCreating(ModelBuilder modelBuilder) {
         base.OnModelCreating(modelBuilder);
         Book.OnModelCreating(modelBuilder);
-        Info.OnModelCreating(modelBuilder);
     }
 }
 ```

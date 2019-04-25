@@ -22,7 +22,6 @@ namespace TestEFCoreRemoveThenAdd.Models {
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
             Book.OnModelCreating(modelBuilder);
-            Info.OnModelCreating(modelBuilder);
         }
     }
 
